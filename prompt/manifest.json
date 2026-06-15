@@ -1,0 +1,16 @@
+{
+  "kbManifest": "kb-2025.1",
+  "promptRev": "prompt-1",
+  "_note": "Bump promptRev on any change to 00-system-frame.md. Bump kbManifest on any KB swap. Either way the content hash in PROMPT_VERSION also changes automatically. Every bump => rebuild => run the full eval set against a preview deploy before production.",
+  "files": [
+    { "file": "00-index-and-glossary.md", "module": null },
+    { "file": "01-marketing-foundations-2025.md", "module": "kickoff-2025" },
+    { "file": "02-brand-foundations.md", "module": "cohesive-branding" },
+    { "file": "03-know-your-ideal-guest.md", "module": "know-your-crowd" },
+    { "file": "04-social-media-profile-optimisation.md", "module": "socials-makeover" },
+    { "file": "05-website-google-and-delivery-partners.md", "module": "website-google-crash-course" },
+    { "file": "06-content-strategy-the-9-post-framework.md", "module": "content-that-sells" },
+    { "file": "07-analytics-and-measurement.md", "module": "power-of-analytics" },
+    { "file": "08-contagious-content.md", "module": "contagious-content" }
+  ]
+}

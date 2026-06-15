@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+.dev.vars
+dist/
+# Generated at build time from prompt/ + kb/ + ui/. Never hand-edit; never commit.
+src/generated/
+*.log
+.DS_Store

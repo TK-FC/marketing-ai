@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Foodie Coaches Marketing AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold:#F2A900; --gold-dim:rgba(242,169,0,0.10); --black:#0D0D0D;
+    --cream:#FAF7F2; --cream2:#F2EDE4; --cream3:#E8E0D4;
+    --muted:#8C8075; --text:#2A2420;
+    --border:rgba(13,13,13,0.08); --border-med:rgba(13,13,13,0.14);
+    --coral:#D9634B;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--cream);
+    background-image:radial-gradient(38rem 38rem at 100% -5%,rgba(242,169,0,0.10),transparent),
+                     radial-gradient(34rem 34rem at -10% 105%,rgba(242,169,0,0.08),transparent);
+    background-attachment:fixed;
+    font-family:"DM Sans",system-ui,sans-serif; color:var(--text);
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  #app{
+    max-width:680px; margin:0 auto; min-height:100%;
+    display:flex; flex-direction:column; padding:0 1rem;
+  }
+  /* Header */
+  .fc-header{display:flex; align-items:center; gap:.75rem; padding:1rem .25rem .75rem}
+  /* FC LOGO SLOT: replace .wordmark with the official Foodie Coaches logo SVG from
+     fc-html-brand-full.md (copy it verbatim, keep the rule to its right). */
+  .wordmark{font-family:"Khand",sans-serif; font-weight:600; text-transform:uppercase;
+    letter-spacing:.06em; font-size:.95rem; color:var(--black); white-space:nowrap}
+  .wordmark b{color:var(--gold); font-weight:600}
+  .fc-rule{flex:1; height:2px; background:linear-gradient(90deg,var(--gold),rgba(242,169,0,0))}
+  /* Thread */
+  #thread{flex:1; display:flex; flex-direction:column; gap:.85rem; padding:.5rem 0 1rem}
+  /* Intro */
+  #intro{padding:.5rem .25rem 1rem}
+  #intro h1{font-family:"Khand",sans-serif; font-weight:700; font-size:2.1rem; line-height:1.08;
+    margin:0 0 .4rem; color:var(--black)}
+  #intro h1 em{font-style:italic; color:var(--gold)}
+  .divider{height:3px; width:48px; background:var(--gold); margin:.1rem 0 .9rem; border-radius:2px}
+  #intro p{font-weight:300; font-size:1.02rem; color:var(--text); margin:0 0 1.1rem}
+  .chips{display:flex; flex-wrap:wrap; gap:.5rem}
+  .chip{font-family:"DM Sans",sans-serif; font-size:.92rem; font-weight:400; text-align:left;
+    background:#fff; color:var(--text); border:1px solid var(--border-med); border-radius:12px;
+    padding:.6rem .8rem; cursor:pointer; transition:border-color .15s, background .15s, box-shadow .15s}
+  .chip:hover{border-color:var(--gold); background:var(--gold-dim)}
+  .chip:active{transform:translateY(1px)}
+  /* Messages */
+  .msg{display:flex; max-width:100%}
+  .msg.user{justify-content:flex-end}
+  .bubble{padding:.7rem .9rem; border-radius:14px; max-width:88%; white-space:pre-wrap;
+    word-wrap:break-word; overflow-wrap:anywhere; font-size:1rem}
+  .msg.user .bubble{background:var(--gold); color:var(--black); border-bottom-right-radius:4px;
+    font-weight:400}
+  .msg.bot .bubble{background:#fff; color:var(--text); border:1px solid var(--border);
+    border-bottom-left-radius:4px}
+  .bubble p{margin:0 0 .65rem}
+  .bubble p:last-child{margin-bottom:0}
+  .bubble ul{margin:.2rem 0 .65rem; padding-left:1.15rem}
+  .bubble li{margin:.15rem 0}
+  .bubble strong{font-weight:500}
+  .referral{display:inline-block; margin-top:.5rem; font-weight:500; color:var(--black);
+    background:var(--gold-dim); border:1px solid rgba(242,169,0,0.4); border-radius:10px;
+    padding:.25rem .6rem; font-size:.92rem}
+  /* Typing */
+  .typing{display:inline-flex; gap:.28rem; align-items:center; padding:.2rem 0}
+  .typing span{width:.5rem; height:.5rem; border-radius:50%; background:var(--muted); opacity:.5;
+    animation:blink 1.2s infinite}
+  .typing span:nth-child(2){animation-delay:.2s}
+  .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.3} 40%{opacity:.9}}
+  .notice{align-self:center; color:var(--muted); font-size:.85rem; font-style:italic; text-align:center;
+    padding:.2rem .5rem}
+  /* Composer */
+  #composer{position:sticky; bottom:0; background:linear-gradient(180deg,rgba(250,247,242,0),var(--cream) 28%);
+    padding:.5rem 0 max(.7rem, env(safe-area-inset-bottom));}
+  .composer-box{display:flex; align-items:flex-end; gap:.5rem; background:#fff;
+    border:1px solid var(--border-med); border-radius:16px; padding:.45rem .45rem .45rem .8rem;
+    box-shadow:0 6px 20px rgba(13,13,13,0.05)}
+  #input{flex:1; border:0; outline:0; resize:none; background:transparent; color:var(--text);
+    font-family:"DM Sans",sans-serif; font-size:1rem; line-height:1.45; max-height:8rem; padding:.35rem 0}
+  #input::placeholder{color:var(--muted)}
+  #send{flex:none; width:2.5rem; height:2.5rem; border:0; border-radius:12px; cursor:pointer;
+    background:var(--gold); color:var(--black); display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 12px rgba(242,169,0,0.3); transition:opacity .15s, transform .1s}
+  #send:active{transform:translateY(1px)}
+  #send:disabled{background:var(--cream3); color:var(--muted); box-shadow:none; cursor:default}
+  #send svg{width:1.2rem; height:1.2rem}
+  .meta{display:flex; justify-content:flex-end; padding:.3rem .3rem 0}
+  #counter{font-size:.75rem; color:var(--muted)}
+  #counter.warn{color:var(--coral)}
+  .footnote{text-align:center; color:var(--muted); font-size:.72rem; padding:.4rem 0 .2rem; font-style:italic}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="fc-header">
+    <span class="wordmark">Foodie&nbsp;Coaches<b>.</b></span>
+    <span class="fc-rule"></span>
+  </div>
+  <div id="thread" aria-live="polite"></div>
+  <form id="composer" autocomplete="off">
+    <div class="composer-box">
+      <textarea id="input" rows="1" maxlength="2000" placeholder="Ask a marketing question..." aria-label="Your marketing question"></textarea>
+      <button id="send" type="submit" aria-label="Send" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+      </button>
+    </div>
+    <div class="meta"><span id="counter">0 / 2000</span></div>
+    <div class="footnote">Answers come straight from your Foodie Coaches marketing program.</div>
+  </form>
+</div>
+
+<script>window.__FC_BOOT__ = __FC_BOOT_JSON__;</script>
+<script>
+(function(){
+  "use strict";
+
+  var MAX = 2000;
+  var boot = window.__FC_BOOT__ || {};
+  var token = boot.token || "";
+
+  // Model history (user + real answers only). Notices are not added here.
+  var messages = [];
+  var sending = false;
+  var inputLocked = false; // true after a daily/monthly cap
+
+  var thread = document.getElementById("thread");
+  var input = document.getElementById("input");
+  var sendBtn = document.getElementById("send");
+  var counter = document.getElementById("counter");
+  var composer = document.getElementById("composer");
+
+  var SUGGESTED = [
+    "What\u2019s a gimmick and how do I make money from one?",
+    "How do I write my brand positioning statement?",
+    "How do I work out who my ideal guest actually is?",
+    "Is my Instagram profile set up so people can find me?",
+    "Are Uber Eats promotions costing me money?",
+    "What should I post this week?",
+    "How do I tell if my marketing is actually working?"
+  ];
+
+  // ---- Intro / suggested chips ---------------------------------------------
+  var intro = null;
+  function buildIntro(){
+    intro = document.createElement("div");
+    intro.id = "intro";
+    var h1 = document.createElement("h1");
+    h1.appendChild(document.createTextNode("Ask a "));
+    var em = document.createElement("em");
+    em.textContent = "marketing";
+    h1.appendChild(em);
+    h1.appendChild(document.createTextNode(" question"));
+    intro.appendChild(h1);
+    var div = document.createElement("div");
+    div.className = "divider";
+    intro.appendChild(div);
+    var p = document.createElement("p");
+    p.textContent = "Straight from your Crushing Your Marketing in 2025 program. Tap one to start, or type your own.";
+    intro.appendChild(p);
+    var chips = document.createElement("div");
+    chips.className = "chips";
+    SUGGESTED.forEach(function(q){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = q;
+      b.addEventListener("click", function(){
+        if (sending || inputLocked) return;
+        submit(q);
+      });
+      chips.appendChild(b);
+    });
+    intro.appendChild(chips);
+    thread.appendChild(intro);
+  }
+  function removeIntro(){
+    if (intro && intro.parentNode){ intro.parentNode.removeChild(intro); intro = null; }
+  }
+
+  // ---- Rendering -----------------------------------------------------------
+  function addUserBubble(text){
+    var row = document.createElement("div");
+    row.className = "msg user";
+    var bub = document.createElement("div");
+    bub.className = "bubble";
+    bub.textContent = text;
+    row.appendChild(bub);
+    thread.appendChild(row);
+    scrollDown();
+  }
+
+  function addBotBubble(){
+    var row = document.createElement("div");
+    row.className = "msg bot";
+    var bub = document.createElement("div");
+    bub.className = "bubble";
+    var typing = document.createElement("span");
+    typing.className = "typing";
+    typing.appendChild(document.createElement("span"));
+    typing.appendChild(document.createElement("span"));
+    typing.appendChild(document.createElement("span"));
+    bub.appendChild(typing);
+    row.appendChild(bub);
+    thread.appendChild(row);
+    scrollDown();
+    return bub;
+  }
+
+  function addNotice(text){
+    var n = document.createElement("div");
+    n.className = "notice";
+    n.textContent = text;
+    thread.appendChild(n);
+    scrollDown();
+  }
+
+  // Plain live text while streaming; we upgrade to rich layout when the answer completes.
+  function setLiveText(bubble, text){
+    bubble.textContent = text;
+    scrollDown();
+  }
+
+  // Safe rich render (DOM methods only - never innerHTML).
+  function renderRich(bubble, text){
+    while (bubble.firstChild) bubble.removeChild(bubble.firstChild);
+    var lines = text.replace(/\r/g, "").split("\n");
+    var i = 0;
+    var para = [];
+    function flushPara(){
+      if (!para.length) return;
+      var joined = para.join("\n").trim();
+      para = [];
+      if (!joined) return;
+      var p = document.createElement("p");
+      appendInline(p, joined);
+      bubble.appendChild(p);
+    }
+    function flushList(items){
+      var ul = document.createElement("ul");
+      items.forEach(function(it){
+        var li = document.createElement("li");
+        appendInline(li, it);
+        ul.appendChild(li);
+      });
+      bubble.appendChild(ul);
+    }
+    while (i < lines.length){
+      var line = lines[i];
+      var trimmed = line.trim();
+      if (trimmed.indexOf("\u2192 FC Class:") === 0 || trimmed.indexOf("-> FC Class:") === 0){
+        flushPara();
+        var ref = document.createElement("span");
+        ref.className = "referral";
+        ref.textContent = trimmed.replace("-> FC Class:", "\u2192 FC Class:");
+        bubble.appendChild(ref);
+        i++;
+        continue;
+      }
+      if (/^[-*\u2022]\s+/.test(trimmed)){
+        flushPara();
+        var items = [];
+        while (i < lines.length && /^[-*\u2022]\s+/.test(lines[i].trim())){
+          items.push(lines[i].trim().replace(/^[-*\u2022]\s+/, ""));
+          i++;
+        }
+        flushList(items);
+        continue;
+      }
+      if (trimmed === ""){
+        flushPara();
+        i++;
+        continue;
+      }
+      para.push(line);
+      i++;
+    }
+    flushPara();
+  }
+
+  // Inline **bold** only; everything via textContent so nothing is interpreted as HTML.
+  function appendInline(parent, text){
+    var parts = text.split("**");
+    for (var k = 0; k < parts.length; k++){
+      if (parts[k] === "") continue;
+      if (k % 2 === 1){
+        var s = document.createElement("strong");
+        s.textContent = parts[k];
+        parent.appendChild(s);
+      } else {
+        parent.appendChild(document.createTextNode(parts[k]));
+      }
+    }
+  }
+
+  function scrollDown(){
+    window.requestAnimationFrame(function(){
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  }
+
+  // ---- Sending -------------------------------------------------------------
+  function submit(text){
+    var q = (text || "").trim();
+    if (!q || sending || inputLocked) return;
+    if (q.length > MAX) q = q.slice(0, MAX);
+
+    removeIntro();
+    addUserBubble(q);
+    messages.push({ role: "user", content: q });
+    input.value = "";
+    updateCounter();
+    autoGrow();
+    setSending(true);
+
+    var bubble = addBotBubble();
+    stream(bubble);
+  }
+
+  async function stream(bubble){
+    var firstDelta = true;
+    var acc = "";
+    var popUserOnExit = true; // popped unless we get a real answer
+    try {
+      var res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-fc-token": token },
+        body: JSON.stringify({ messages: messages })
+      });
+      var state = res.headers.get("x-fc-state") || "ok";
+
+      if (state === "burst"){
+        removeBubble(bubble);
+        startCooldown(12);
+        finish(true);
+        return;
+      }
+      if (state === "gate" || res.status === 401){
+        removeBubble(bubble);
+        addNotice("Your session timed out. Refresh the page to keep going.");
+        inputLocked = true;
+        finish(true);
+        return;
+      }
+      if (state === "bad_input" || res.status === 400){
+        removeBubble(bubble);
+        addNotice("That didn\u2019t look right. Give it another go.");
+        finish(true);
+        return;
+      }
+      if (!res.body){
+        bubble.textContent = "That one didn\u2019t get through, give it another go.";
+        finish(true);
+        return;
+      }
+
+      var reader = res.body.getReader();
+      var dec = new TextDecoder();
+      while (true){
+        var r = await reader.read();
+        if (r.done) break;
+        var chunk = dec.decode(r.value, { stream: true });
+        if (chunk){
+          if (firstDelta){ bubble.textContent = ""; firstDelta = false; }
+          acc += chunk;
+          setLiveText(bubble, acc);
+        }
+      }
+      if (firstDelta){ bubble.textContent = ""; } // nothing arrived
+
+      if (state === "ok"){
+        renderRich(bubble, acc);
+        messages.push({ role: "assistant", content: acc });
+        popUserOnExit = false;
+      } else {
+        // daily_limit / monthly_ceiling / error: body is the canonical copy; show as-is.
+        renderRich(bubble, acc);
+        if (state === "daily_limit" || state === "monthly_ceiling"){
+          inputLocked = true;
+        }
+      }
+      finish(popUserOnExit);
+    } catch (e){
+      if (acc){
+        renderRich(bubble, acc);
+        addNotice("That cut off. Give it another go.");
+      } else {
+        bubble.textContent = "That one didn\u2019t get through, give it another go.";
+      }
+      finish(true);
+    }
+  }
+
+  function finish(popUser){
+    if (popUser && messages.length && messages[messages.length - 1].role === "user"){
+      messages.pop();
+    }
+    setSending(false);
+  }
+
+  function removeBubble(bubble){
+    var row = bubble.parentNode;
+    if (row && row.parentNode) row.parentNode.removeChild(row);
+  }
+
+  // ---- Cooldown (burst) ----------------------------------------------------
+  var cooldownTimer = null;
+  function startCooldown(secs){
+    inputLocked = true;
+    var remaining = secs;
+    addNotice("Easy does it. Give it a few seconds.");
+    refreshSendState();
+    cooldownTimer = setInterval(function(){
+      remaining -= 1;
+      if (remaining <= 0){
+        clearInterval(cooldownTimer);
+        cooldownTimer = null;
+        inputLocked = false;
+        refreshSendState();
+      }
+    }, 1000);
+  }
+
+  // ---- Composer state ------------------------------------------------------
+  function setSending(v){
+    sending = v;
+    refreshSendState();
+  }
+  function refreshSendState(){
+    var len = input.value.trim().length;
+    var ok = len > 0 && len <= MAX && !sending && !inputLocked;
+    sendBtn.disabled = !ok;
+    input.disabled = inputLocked && !sending;
+  }
+  function updateCounter(){
+    var len = input.value.length;
+    counter.textContent = len + " / " + MAX;
+    if (len > MAX - 100) counter.className = "warn"; else counter.className = "";
+  }
+  function autoGrow(){
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 128) + "px";
+  }
+
+  input.addEventListener("input", function(){ updateCounter(); autoGrow(); refreshSendState(); });
+  input.addEventListener("keydown", function(e){
+    if (e.key === "Enter" && !e.shiftKey){
+      e.preventDefault();
+      submit(input.value);
+    }
+  });
+  composer.addEventListener("submit", function(e){
+    e.preventDefault();
+    submit(input.value);
+  });
+
+  // ---- Boot ----------------------------------------------------------------
+  buildIntro();
+  updateCounter();
+  refreshSendState();
+})();
+</script>
+</body>
+</html>

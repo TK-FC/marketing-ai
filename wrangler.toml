@@ -1,0 +1,54 @@
+name = "marketing-ai"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+
+# If your `wrangler` login has more than one account, uncomment and set this to the
+# launchaccounting account id (wrangler whoami shows it).
+# account_id = "REPLACE_WITH_LAUNCHACCOUNTING_ACCOUNT_ID"
+
+# Regenerate the system-prompt + KB bundle and the page HTML before every build / dev / deploy.
+# This is what bakes PROMPT_VERSION from the actual shipped content, so a KB edit can never
+# deploy without a matching version. Requires no manual step - wrangler runs it for you.
+[build]
+command = "node scripts/build-prompt.mjs"
+
+# --- Custom domain route (provisional name; one-line change on rename) ---
+# The proxied DNS record for this subdomain is created in the launchaccounting Cloudflare
+# dashboard (web UI) and must exist in the foodiecoaches.com zone before first deploy. See README.
+[[routes]]
+pattern = "marketing-ai.foodiecoaches.com/*"
+zone_name = "foodiecoaches.com"
+
+# --- Non-secret config (edit freely; redeploy to apply) ---
+# Secrets (ANTHROPIC_API_KEY, SUPABASE_SERVICE_ROLE_KEY, GATE_SIGNING_SECRET) are NOT here -
+# they are set with `wrangler secret put`. Nothing sensitive lives in this file or the frontend.
+[vars]
+KAJABI_ORIGIN = "https://foodie-coaches-program.mykajabi.com"
+KAJABI_PAGE_URL = "https://foodie-coaches-program.mykajabi.com"
+SUPABASE_URL = "https://REPLACE-WITH-YOUR-PROJECT.supabase.co"
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
+MAX_TOKENS = "1000"
+HISTORY_TURNS = "8"
+MAX_INPUT_CHARS = "2000"
+# Temporarily set RATE_LIMIT_DAILY = "3" to verify the daily-limit path, then restore to 40.
+RATE_LIMIT_DAILY = "40"
+MONTHLY_CEILING_USD = "100"
+MONTHLY_ALERT_USD = "50"
+GATE_TOKEN_TTL_SECONDS = "28800"
+
+# --- Durable daily counter + monthly cost counter (Workers KV) ---
+# Create with:  wrangler kv namespace create RL
+#         and:  wrangler kv namespace create RL --preview
+# then paste the ids below.
+[[kv_namespaces]]
+binding = "RL"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+
+# --- Burst limiter: 10 requests / 60s per IP, per Cloudflare location ---
+# namespace_id is an arbitrary positive integer you choose - there is no resource to create.
+# To verify the burst path you can temporarily drop the limit, then restore.
+[[ratelimits]]
+name = "BURST"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
