@@ -4,7 +4,7 @@ A member-facing AI chatbot that answers hospitality marketing questions **strict
 
 It never invents marketing advice. Every grounded answer names its source class. Anything outside the KB is routed to the Monday Marketing call, the member's FC coach (ops/costing), or the People Assistant AI / Thursday People Call (people questions). Out-of-bounds and partial questions are logged (question text only) to feed the Monday call agenda.
 
-> Name and domain are provisional (`marketing-ai.foodiecoaches.com`). Renaming before launch = update the route in `wrangler.toml`, the DNS record, and the iframe `src` in `kajabi-embed.html`, then redeploy. Confirm the final name with Sam at deploy time.
+> Name and domain are provisional (`marketing-assistant-ai.foodiecoaches.com`). Renaming before launch = update the route in `wrangler.toml`, the DNS record, and the iframe `src` in `kajabi-embed.html`, then redeploy. Confirm the final name with Sam at deploy time.
 
 ---
 
@@ -130,7 +130,7 @@ The runner posts the 29 golden questions to a deployed endpoint in **eval mode**
 
 ```bash
 # Set EVAL_KEY as a secret on the target deploy first (step 6). Use a preview or production host.
-BASE_URL=https://marketing-ai.foodiecoaches.com EVAL_KEY=<your EVAL_KEY> npm run eval
+BASE_URL=https://marketing-assistant-ai.foodiecoaches.com EVAL_KEY=<your EVAL_KEY> npm run eval
 # add VERBOSE=1 to print each answer for the human voice / content spot-check
 ```
 

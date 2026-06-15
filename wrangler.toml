@@ -12,12 +12,12 @@ compatibility_date = "2026-06-01"
 [build]
 command = "node scripts/build-prompt.mjs"
 
-# --- Custom domain route (provisional name; one-line change on rename) ---
-# The proxied DNS record for this subdomain is created in the launchaccounting Cloudflare
-# dashboard (web UI) and must exist in the foodiecoaches.com zone before first deploy. See README.
-[[routes]]
-pattern = "marketing-ai.foodiecoaches.com/*"
-zone_name = "foodiecoaches.com"
+# --- Custom domain ---
+# Live at https://marketing-assistant-ai.foodiecoaches.com, set up as a Worker Custom Domain in the
+# Cloudflare dashboard (Workers > this worker > Domains & Routes). The dashboard manages that domain,
+# so there is intentionally no [[routes]] block here: a route + custom domain for the same host
+# conflict. To manage it in code instead, remove the dashboard custom domain and add a [[routes]]
+# block with pattern = "marketing-assistant-ai.foodiecoaches.com/*".
 
 # --- Non-secret config (edit freely; redeploy to apply) ---
 # Secrets (ANTHROPIC_API_KEY, SUPABASE_SERVICE_ROLE_KEY, GATE_SIGNING_SECRET) are NOT here -
@@ -25,7 +25,7 @@ zone_name = "foodiecoaches.com"
 [vars]
 KAJABI_ORIGIN = "https://foodie-coaches-program.mykajabi.com"
 KAJABI_PAGE_URL = "https://foodie-coaches-program.mykajabi.com"
-SUPABASE_URL = "https://REPLACE-WITH-YOUR-PROJECT.supabase.co"
+SUPABASE_URL = "https://skpiirriagtkksghszbo.supabase.co"
 ANTHROPIC_MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = "1000"
 HISTORY_TURNS = "8"
@@ -42,8 +42,8 @@ GATE_TOKEN_TTL_SECONDS = "28800"
 # then paste the ids below.
 [[kv_namespaces]]
 binding = "RL"
-id = "REPLACE_WITH_KV_NAMESPACE_ID"
-preview_id = "REPLACE_WITH_KV_PREVIEW_ID"
+id = "b0a26539f181469781422642bb272cfc"
+preview_id = "465527912685450787756712d4936597"
 
 # --- Burst limiter: 10 requests / 60s per IP, per Cloudflare location ---
 # namespace_id is an arbitrary positive integer you choose - there is no resource to create.
