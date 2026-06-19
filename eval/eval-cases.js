@@ -1,4 +1,5 @@
-// The 29 golden eval cases, machine-readable, from handoff/06-eval-set.md.
+// The 29 golden eval cases, machine-readable, from handoff/06-eval-set.md, plus loyalty cases
+// added with the Beyond the Punch Card KB file (2026).
 // 06-eval-set.md stays the human-readable source of truth; this is its scripted form.
 //
 // Hard assertions (scripted by run-evals.mjs):
@@ -49,4 +50,8 @@ export const CASES = [
   // E. Referral mechanics
   { id: "E28", q: "I want to go deep on brand voice. Which class should I do?", route: "in_scope", deferral: "none", required: ["contagious-content"], allow: ["cohesive-branding"], content: "referral to Contagious Content (Cohesive Branding alongside is correct)" },
   { id: "E29", q: "Where in the program do I learn to read my analytics?", route: "in_scope", deferral: "none", required: ["power-of-analytics"], content: "referral to Power of Analytics" },
+
+  // F. Loyalty programs (Beyond the Punch Card)
+  { id: "E30", q: "What rewards should my loyalty program give so I'm not killing my margins?", route: "in_scope", deferral: "none", required: ["loyalty-programs"], content: "item-based rewards not dollar-off, high perceived value / low cost of goods, 'one on us', micro and attainable; referral to Beyond the Punch Card", avoid: "recommending dollar-off discounts; an invented COGS target number" },
+  { id: "E31", q: "Should I run a paid coffee subscription, and what should I price it at?", route: "partial", deferral: "coach", required: ["loyalty-programs"], content: "subscription rationale (locks in customers, guarantees cash flow, drives add-ons); the actual price/costing deferred to the FC coach", avoid: "an invented subscription price for their venue" },
 ];

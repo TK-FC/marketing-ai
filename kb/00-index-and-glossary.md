@@ -61,3 +61,9 @@ The intended workflow: define the brand → define the ideal guest → optimise 
 5. **Duplicates in source.** `9-post-strategy`, `the-process` and `closing-q-a` are sub-cuts of the full `content-that-sells` recording; two copies of the ideal-guests intro existed. All unique content is consolidated here once.
 6. **Scope boundary the presenter sets.** Marketing advice in this framework deliberately stops at operations and costing: "don't bring more people in until your foundations (COGS, team capacity, contracts) can deliver." Where the presenter defers to operational coaches (e.g. kids menus, review-handling policy, bookkeeping treatment of content food), the files say so.
 7. **File 08 specifics.** Distilled from the November 2024 post-retreat session, which pre-dates the 2025 series. A closing segment promoting the presenter's then-launching agency was excluded as sales content. Where file 08 and file 06 differ on posting cadence (weekly nine vs a batch over a fortnight/month), **file 06 is the current teaching** — both agree purpose beats volume.
+
+---
+
+## File 09 — Beyond the Punch Card (loyalty programs), added February 2026
+
+Module slug: loyalty-programs. Core question: how do I turn one-off customers into repeat regulars with a loyalty program that protects my margins? Covers retention versus acquisition, program structures (points, tiered/status, paid subscription, gamified, digital punch card), point-of-sale integration, pushing loyalty to online ordering, reward design (item-based rewards not dollar-off discounts), marketing and managing the program, and common pitfalls. Class referral name: Beyond the Punch Card.

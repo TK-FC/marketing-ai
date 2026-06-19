@@ -19,6 +19,7 @@ export const MODULE_SLUGS = [
   "content-that-sells",
   "power-of-analytics",
   "contagious-content",
+  "loyalty-programs",
 ];
 
 // Buffer past this many bytes without a separator => declare an envelope parse failure.
